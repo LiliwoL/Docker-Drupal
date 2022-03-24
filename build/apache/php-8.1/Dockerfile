@@ -21,7 +21,6 @@ RUN apt-get update \
 	libzip-dev \
 	apt-utils \
 	gnupg \
-	redis-tools \
 	mariadb-client \
 	zlib1g-dev \
 	libpng-dev \
