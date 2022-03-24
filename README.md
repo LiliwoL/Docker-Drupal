@@ -1,4 +1,4 @@
-# Docker PHP et MySQL
+# Docker pour Drupal
 
 Un environnement Docker pour le développement PHP
 

@@ -39,8 +39,6 @@ RUN apt-get update \
 	zsh \
 	&& apt-get clean
 
-# Install Magento Dependencies
-
 RUN docker-php-ext-configure \
   	gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
   	docker-php-ext-install \
