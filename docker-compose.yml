@@ -20,7 +20,7 @@ services:
     links:
       - db
     networks:
-      - -network_dev
+      - -drupal
 
   db:
     image: 'mariadb:10.7'
@@ -40,41 +40,22 @@ services:
       - './dbdata:/var/lib/mysql'
       - './backups:/var/tmp/backups'
     networks:
-      - -network_drupal
-
-  db2:
-    image: 'mariadb:10.7'
-    container_name: dev_db2
-    ports:
-      - '3307:3306'
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MARIADB_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=papeterie_db
-      - MARIADB_DATABASE=papeterie_db
-      - MYSQL_USER=admin
-      - MARIADB_USER=admin
-      - MYSQL_PASSWORD=admin123
-      - MARIADB_PASSWORD=admin123
-    volumes:
-      - './dbdata2:/var/lib/mysql'
-      - './backups2:/var/tmp/backups'
-    networks:
-      - -network_dev
+      - -drupal
 
   adminer:
     image: adminer
-    container_name: dev_adminer
+    container_name: drupal_adminer
     restart: always
     ports:
       - '8080:8080'
     networks:
-      - -network_dev
+      - -drupal
 
 
 networks:
-  -network_dev:
+  -drupal:
     driver: bridge
+
 volumes:
   dbdata:
     driver: local
