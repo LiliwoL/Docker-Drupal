@@ -45,12 +45,18 @@ Après avoir cloné ce dépôt:
 
 	Vous pouvez facilement l'envoi de mail via telnet
 
+	*Sur MacOs, pour installer telnet*
+
+	```bash
+	brew install telnet
+	```
+
 	```bash
 	$ telnet localhost 1025
 
-	EHLO 19ft.com
-	MAIL FROM:
-	RCPT TO:
+	EHLO mailhog.example
+	MAIL FROM:<mon_adresse@mail.fr>
+	RCPT TO:<mon_adresse_destinataire@mail.fr>
 	DATA
 	Subject: Hello World
 

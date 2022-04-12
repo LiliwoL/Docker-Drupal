@@ -12,9 +12,10 @@ services:
       - '9003:9003'
     volumes:
       - './src:/var/www/html'
+      - './var:/var/log'
       - '~/.composer/cache:/var/www/.composer/cache'
     environment:
-      XDEBUG_CONFIG: remote_host=localhost
+      XDEBUG_CONFIG: 'remote_host=host.docker.internal remote_port=9003'
       PHP_IDE_CONFIG: serverName=Docker
     depends_on:
       - db
@@ -54,6 +55,7 @@ services:
 
   mailhog:
     image: mailhog/mailhog
+    restart: always
     container_name: drupal_mailhog
     ports:
       - '1025:1025'
