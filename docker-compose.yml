@@ -53,6 +53,21 @@ services:
     networks:
       - -drupal
 
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: drupal_phpmyadmin
+    restart: always
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - PMA_USER=admin
+      - PMA_PASSWORD=admin123
+    ports:
+      - 8081:80
+    networks:
+      - -drupal
+
+
   mailhog:
     image: mailhog/mailhog
     restart: always

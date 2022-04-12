@@ -5,3 +5,4 @@ backups2/
 db2data/
 .DS_Store
 .idea
+var/
