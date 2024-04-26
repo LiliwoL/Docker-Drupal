@@ -1,22 +1,25 @@
 version: '3.1'
+
 services:
 
-  apache:
+  # ================================
+  # DRUPAL
+  # ================================
+  drupal_web:
+    container_name: "${PROJECT_NAME}-drupal"
     build:
       context: .
-      # PHP 8.1
-      dockerfile: build/apache/php-8.1/Dockerfile
-    container_name: drupal_web
+      # PHP 8.3
+      dockerfile: build/Dockerfile
     ports:
-      - '80:80'
+      - '800:80'
       - '9003:9003'
     volumes:
       - './src:/var/www/html'
       - './var:/var/log'
       - '~/.composer/cache:/var/www/.composer/cache'
-    environment:
-      XDEBUG_CONFIG: 'remote_host=host.docker.internal remote_port=9003'
-      PHP_IDE_CONFIG: serverName=Docker
+    env_file:
+      - .env.docker
     depends_on:
       - db
     links:
@@ -24,59 +27,66 @@ services:
     networks:
       - -drupal
 
+  # Mariadb
   db:
+    container_name: "${PROJECT_NAME}-drupal-db"
     image: 'mariadb:10.7'
-    container_name: drupal_db
     ports:
       - '3306:3306'
+    env_file:
+      - .env.docker
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MARIADB_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=formation
-      - MARIADB_DATABASE=formation
-      - MYSQL_USER=admin
-      - MARIADB_USER=admin
-      - MYSQL_PASSWORD=admin123
-      - MARIADB_PASSWORD=admin123
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MYSQL_USER=${DB_USER}
+      - MARIADB_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
     volumes:
       - './dbdata:/var/lib/mysql'
       - './backups:/var/tmp/backups'
     networks:
       - -drupal
 
+  # Adminer
   adminer:
     image: adminer
-    container_name: drupal_adminer
+    container_name: "${PROJECT_NAME}-adminer"
     restart: always
     ports:
       - '8080:8080'
     networks:
       - -drupal
 
+  # Phpmyadmin
   phpmyadmin:
     image: phpmyadmin
-    container_name: drupal_phpmyadmin
+    container_name: "${PROJECT_NAME}-phpmyadmin"
     restart: always
+    env_file:
+      - .env.docker
     environment:
-      - PMA_HOST=db
-      - PMA_PORT=3306
-      - PMA_USER=admin
-      - PMA_PASSWORD=admin123
+      - PMA_HOST=${DB_HOST}
+      - PMA_PORT=${DB_PORT}
+      - PMA_DATABASE=${DB_DATABASE}
     ports:
       - 8081:80
     networks:
       - -drupal
 
-
+  # Mailhog
   mailhog:
     image: mailhog/mailhog
     restart: always
-    container_name: drupal_mailhog
+    container_name: "${PROJECT_NAME}-mailhog"
     ports:
       - '1025:1025'
       - '8025:8025'
     networks:
       - -drupal
+
 
 networks:
   -drupal:

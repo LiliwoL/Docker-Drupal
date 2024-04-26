@@ -1,9 +1,6 @@
-FROM php:8.1-apache
-
-ENV XDEBUG_PORT 9003
+FROM php:8.3-apache
 
 # Install System Dependencies
-
 RUN apt-get update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
 	software-properties-common \
@@ -38,6 +35,7 @@ RUN apt-get update \
 	zsh \
 	&& apt-get clean
 
+# Extensions PHP
 RUN docker-php-ext-configure \
   	gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/; \
   	docker-php-ext-install \

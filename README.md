@@ -27,7 +27,8 @@ Après avoir cloné ce dépôt:
 ## Services
 
 * Site Web
-    http://localhost
+    http://localhost:800
+    http://localhost:9003
 
 * Serveur SQL
     localhost
